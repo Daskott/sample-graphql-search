@@ -1,0 +1,12 @@
+# From schema.graphql
+# https://github.com/relayjs/relay-examples/blob/master/todo/data/schema.graphql
+
+type Query {
+  viewer: User
+
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+}
