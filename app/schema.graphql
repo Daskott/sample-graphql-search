@@ -2,11 +2,22 @@
 # https://github.com/relayjs/relay-examples/blob/master/todo/data/schema.graphql
 
 type Query {
-  viewer: User
+  books: [Book!]!
+  book(id: ID!): Book
+  searchBooks(filter: String, first: Int, after: Int): BookConnection
+}
 
-  # Fetches an object given its ID
-  node(
-    # The ID of an object
-    id: ID!
-  ): Node
+type Book {
+  id: ID!
+  title: String
+  author: String
+}
+
+type BookEdge {
+  cursor: String!
+  node: Book
+}
+
+type BookConnection {
+  edges: [BookEdge!]!
 }
