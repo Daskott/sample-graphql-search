@@ -2,6 +2,7 @@ const express = require("express");
 const graphqlHTTP = require("express-graphql");
 const bodyParser = require("body-parser");
 const { makeExecutableSchema } = require("graphql-tools");
+const cors = require("cors");
 const app = express();
 
 // Some fake data
@@ -25,8 +26,21 @@ const books = [
     id: 1355,
     title: "The everything store",
     author: "Jeff Bezos"
+  },
+  {
+    id: 1356,
+    title: "The Batman",
+    author: "Alfred Butler"
   }
-].sort((a, b) => a.author < b.author);
+].sort((a, b) => {
+  if (a.author.toLocaleLowerCase() < b.author.toLowerCase()) {
+    return -1;
+  }
+  if (a.author.toLocaleLowerCase() > b.author.toLowerCase()) {
+    return 1;
+  }
+  return 0;
+});
 
 // The GraphQL schema in string form
 const typeDefs = `
@@ -118,6 +132,15 @@ const schema = makeExecutableSchema({
   typeDefs,
   resolvers
 });
+
+const CORS_OPTION = {
+  origin: function(origin, callback) {
+    console.log({ origin });
+    callback(null, true);
+  }
+};
+
+app.use(cors(CORS_OPTION));
 
 app.use(bodyParser.json());
 

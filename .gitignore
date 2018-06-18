@@ -9,6 +9,7 @@ app/coverage
 
 # production
 app/build
+__generated__/
 
 # misc
 .DS_Store
