@@ -21,7 +21,6 @@ class App extends Component {
             }
           }
         `}
-        variables={{}}
         render={({ error, props }) => {
           if (error) {
             return <div>Error!</div>;
@@ -30,7 +29,8 @@ class App extends Component {
             return <div>Loading...</div>;
           }
 
-          console.log({ props });
+          const { edges } = props.searchBooks;
+
           return (
             <div className="App">
               <header className="App-header">
@@ -40,6 +40,15 @@ class App extends Component {
               <p className="App-intro">
                 To get started, edit <code>src/App.js</code> and save to reload.
               </p>
+              <ol>
+                {edges.map(({ node: { author, title } }, index) => (
+                  <li key={`${title}-${index}`}>
+                    <p>Book: {title}</p>
+                    <p>Author: {author}</p>
+                    <hr/>
+                  </li>
+                ))}
+              </ol>
             </div>
           );
         }}
@@ -49,3 +58,20 @@ class App extends Component {
 }
 
 export default App;
+
+// export default createFragmentContainer(
+//   App,
+//   graphql`
+//     # As a convention, we name the fragment as '<ComponentFileName>_<propName>'
+//     fragment App_books on Query {
+//       searchBooks(filter: "t", first: 10) {
+//         edges {
+//           node {
+//             title
+//             author
+//           }
+//         }
+//       }
+//     }
+//   `
+// );
