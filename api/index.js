@@ -3,6 +3,7 @@ const graphqlHTTP = require("express-graphql");
 const bodyParser = require("body-parser");
 const { makeExecutableSchema } = require("graphql-tools");
 const cors = require("cors");
+const morgan = require("morgan");
 const app = express();
 
 // Some fake data
@@ -20,7 +21,7 @@ const books = [
   {
     id: 1322,
     title: "Born a crime",
-    author: "Trevor Noah"
+    author: "Trevor Noahli"
   },
   {
     id: 1355,
@@ -135,7 +136,7 @@ const schema = makeExecutableSchema({
 
 const CORS_OPTION = {
   origin: function(origin, callback) {
-    console.log({ origin });
+    // console.log({ origin });
     callback(null, true);
   }
 };
@@ -143,6 +144,8 @@ const CORS_OPTION = {
 app.use(cors(CORS_OPTION));
 
 app.use(bodyParser.json());
+
+app.use(morgan("dev"));
 
 app.use(
   "/graphql",
